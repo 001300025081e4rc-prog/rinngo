@@ -1,0 +1,392 @@
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body,div,button,span,td,th,p,textarea{font-family:'Noto Sans JP',sans-serif}
+.app{width:100%;max-width:390px;margin:0 auto;min-height:660px;display:flex;flex-direction:column;background:#F7F6FF;border-radius:24px;overflow:hidden;border:0.5px solid #E2E0F8}
+.scr{display:none;flex-direction:column;flex:1}
+.scr.on{display:flex}
+.topbar{padding:16px 20px 14px;background:#fff;border-bottom:0.5px solid #EEEDF8;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.topbar-title{font-size:16px;font-weight:700;color:#1A1A2E;flex:1}
+.back-btn{font-size:13px;color:#6C47FF;cursor:pointer;display:flex;align-items:center;gap:3px;font-weight:700}
+.scroll-body{flex:1;overflow-y:auto}
+.tabbar{display:flex;border-top:2px solid #E2E0F8;background:#fff;flex-shrink:0}
+.tb{flex:1;padding:10px 4px 12px;background:none;border:none;border-top:3px solid transparent;margin-top:-2px;cursor:pointer;font-size:10px;color:#1A1A2E;display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:700}
+.tb i{font-size:22px;color:#6B6B80}
+.tb.on{color:#6C47FF;border-top-color:#6C47FF}
+.tb.on i{color:#6C47FF}
+
+.hero{padding:22px 20px 18px;background:linear-gradient(135deg,#6C47FF,#A47BFA);flex-shrink:0}
+.hero-logo{font-size:30px;font-weight:700;color:#fff}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.75);margin-top:6px}
+.next-card{margin:16px 16px 0;background:#fff;border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;border:0.5px solid #E2E0F8}
+.next-icon{width:52px;height:52px;border-radius:14px;background:#D4F5E9;display:flex;align-items:center;justify-content:center;font-size:26px;color:#00A878;flex-shrink:0}
+.next-label{font-size:11px;color:#6B6B80;font-weight:700;letter-spacing:.06em}
+.next-subject{font-size:22px;font-weight:700;color:#1A1A2E;margin-top:2px}
+.next-meta{font-size:11px;color:#6C47FF;font-weight:500;margin-top:3px}
+.home-body{padding:14px 16px}
+.sec-label{font-size:10px;font-weight:700;color:#6B6B80;letter-spacing:.1em;margin-bottom:10px}
+.big-btn{width:100%;padding:15px 18px;border-radius:16px;border:0.5px solid #E2E0F8;cursor:pointer;display:flex;align-items:center;gap:14px;margin-bottom:10px;text-align:left;background:#fff}
+.ico-w{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.ico-w.pnk{background:#FFE0EC;color:#FF4081}
+.ico-w.grn{background:#D4F5E9;color:#00A878}
+.ico-w.ora{background:#FFE8D6;color:#FF6B2C}
+.btn-title{font-size:15px;font-weight:700;color:#1A1A2E}
+.btn-desc{font-size:11px;color:#6B6B80;margin-top:2px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mini-btn{padding:16px;border-radius:16px;border:0.5px solid #E2E0F8;cursor:pointer;display:flex;flex-direction:column;gap:8px;background:#fff}
+.mini-label{font-size:13px;font-weight:700;color:#1A1A2E}
+.mini-sub{font-size:11px;color:#6B6B80}
+
+.tt-next-bar{margin:14px 16px;background:#EDE8FF;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.tt-next-text{font-size:11px;font-weight:700;color:#5B35D5}
+.tt-next-name{font-size:17px;font-weight:700;color:#3A1EA8}
+.tt-wrap{padding:0 12px 16px}
+.tt-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.tt-table th{font-size:10px;font-weight:700;color:#1A1A2E;padding:6px 2px;text-align:center;border-bottom:1.5px solid #E2E0F8;background:#fff}
+.tt-table td{border:0.5px solid #EEEDF8;height:62px;padding:3px;vertical-align:top;background:#fff}
+.tt-table td.per{background:#F0EFF8;text-align:center;vertical-align:middle;font-size:10px;color:#1A1A2E;width:20px;font-weight:700}
+.cell{font-size:9px;font-weight:700;border-radius:6px;padding:3px 4px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.cell-name{font-size:10px;font-weight:700}
+.cell-teacher{font-size:8px;font-weight:400;opacity:.85;margin-top:1px}
+.cell-room{font-size:8px;font-weight:700;opacity:.9;margin-top:1px}
+.c-pur{background:#EDE8FF;color:#5B35D5}
+.c-grn{background:#D4F5E9;color:#007A56}
+.c-ora{background:#FFE8D6;color:#CC4E12}
+.c-blu{background:#D6EEFF;color:#0076CC}
+.c-pnk{background:#FFE0EC;color:#CC2060}
+.c-yel{background:#FFF5CC;color:#8A6000}
+.c-red{background:#FFE0E0;color:#CC0033}
+.c-teal{background:#D0F5F0;color:#007B6E}
+
+.dl-hero{padding:14px 16px;background:#fff;border-bottom:0.5px solid #EEEDF8;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.dl-hero-left{display:flex;align-items:center;gap:6px;font-size:12px;color:#1A1A2E;font-weight:700}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#00C853;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,200,83,.6)}70%{box-shadow:0 0 0 6px rgba(0,200,83,0)}100%{box-shadow:0 0 0 0 rgba(0,200,83,0)}}
+.next-update{font-size:10px;color:#00A878;font-weight:700}
+.dl-section{padding:12px 16px 4px;font-size:10px;font-weight:700;color:#6B6B80;letter-spacing:.08em}
+.dl-card{margin:0 16px 10px;background:#fff;border-radius:14px;border:0.5px solid #E2E0F8;cursor:pointer;transition:background .4s}
+.dl-card.flash{background:#FFF9DB}
+.dl-top{display:flex;align-items:center;justify-content:space-between;padding:13px 14px}
+.dl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dl-name{font-size:14px;font-weight:700;color:#1A1A2E}
+.dl-op{font-size:10px;color:#6B6B80;margin-top:1px}
+.badge{font-size:10px;padding:4px 10px;border-radius:10px;font-weight:700;transition:.3s}
+.badge.ok{background:#D4F5E9;color:#007A56}
+.badge.ng{background:#FFE8D6;color:#CC4E12}
+.badge.info{background:#EDE8FF;color:#5B35D5}
+.dl-detail{margin:0 14px;padding:10px 0 12px;font-size:12px;color:#1A1A2E;line-height:1.6;display:none;border-top:0.5px solid #EEEDF8}
+.dl-time{font-size:9px;color:#ADADC0;margin-top:6px}
+
+.tc-list{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.tc-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:#fff;cursor:pointer;border:0.5px solid #E2E0F8}
+.av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.tc-name{font-size:14px;font-weight:700;color:#1A1A2E}
+.tc-subj{font-size:11px;color:#6B6B80;margin-top:2px}
+
+.msg-screen{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.msg-header{padding:14px 16px;background:#EDE8FF;flex-shrink:0}
+.msg-to{font-size:12px;color:#5B35D5;font-weight:500}
+.msg-teacher{font-size:18px;font-weight:700;color:#3A1EA8}
+.msg-subj-lbl{font-size:11px;color:#6C47FF;font-weight:500;margin-top:2px}
+.msg-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.msg-label{font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:6px}
+.photo-area{border:2px dashed #C0B8F0;border-radius:14px;background:#F7F6FF;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:16px}
+.photo-area i{font-size:34px;color:#A47BFA}
+.photo-area-label{font-size:13px;color:#6C47FF;font-weight:700}
+.photo-area-sub{font-size:11px;color:#6B6B80}
+.photo-preview{display:none;border-radius:12px;background:#D4F5E9;padding:12px;align-items:center;gap:10px}
+.photo-preview i{font-size:24px;color:#00A878}
+.photo-preview-text{font-size:12px;font-weight:700;color:#007A56}
+textarea{width:100%;border-radius:12px;border:1.5px solid #E2E0F8;padding:12px;font-size:13px;resize:none;background:#fff;color:#1A1A2E;outline:none}
+textarea:focus{border-color:#A47BFA}
+.send-bar{padding:12px 16px 16px;background:#fff;border-top:2px solid #E2E0F8;flex-shrink:0}
+.send-btn{width:100%;padding:18px;border-radius:18px;border:none;background:#FFD600;color:#1A1A2E;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.send-btn i,.send-btn span{color:#1A1A2E}
+.sent-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;gap:16px}
+.sent-icon{width:72px;height:72px;border-radius:50%;background:#D4F5E9;display:flex;align-items:center;justify-content:center;font-size:36px;color:#00A878}
+.sent-title{font-size:20px;font-weight:700;color:#1A1A2E}
+.sent-sub{font-size:13px;color:#1A1A2E;line-height:1.6}
+.sent-back{padding:14px 32px;border-radius:14px;border:none;background:#FFD600;color:#1A1A2E;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+
+<div style="padding:10px 16px 0;background:var(--color-background-tertiary)">
+<div style="display:flex;gap:6px;margin-bottom:10px;justify-content:center">
+<button id="sw-home" onclick="go('home')" style="padding:6px 14px;border-radius:20px;border:none;background:#6C47FF;color:#fff;cursor:pointer;font-size:12px;font-weight:700">ホーム</button>
+<button id="sw-tt" onclick="go('tt')" style="padding:6px 14px;border-radius:20px;border:0.5px solid #C0B8F0;background:#fff;color:#1A1A2E;cursor:pointer;font-size:12px;font-weight:700">時間割</button>
+<button id="sw-dl" onclick="go('dl')" style="padding:6px 14px;border-radius:20px;border:0.5px solid #C0B8F0;background:#fff;color:#1A1A2E;cursor:pointer;font-size:12px;font-weight:700">遅延情報</button>
+</div>
+</div>
+
+<div class="app">
+
+<div id="scr-home" class="scr on">
+  <div class="hero">
+    <div class="hero-logo">遅延なう</div>
+    <div class="hero-sub">高井 勇希 ／ 2年4組 17番</div>
+  </div>
+  <div class="next-card">
+    <div class="next-icon"><i class="ti ti-book" aria-hidden="true"></i></div>
+    <div>
+      <div class="next-label">次の授業</div>
+      <div class="next-subject">生基</div>
+      <div class="next-meta">1限 ／ 則 茂雄先生 ／ CR24</div>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div class="home-body">
+      <div class="sec-label" style="margin-top:4px">アクション</div>
+      <button class="big-btn" onclick="go('tc')">
+        <div class="ico-w pnk"><i class="ti ti-message-circle" aria-hidden="true"></i></div>
+        <div style="flex:1"><div class="btn-title">先生に連絡</div><div class="btn-desc">遅延証明書を送る・欠席連絡など</div></div>
+        <i class="ti ti-chevron-right" aria-hidden="true" style="color:#6B6B80;font-size:16px"></i>
+      </button>
+      <div class="row2">
+        <button class="mini-btn" onclick="go('tt')">
+          <div class="ico-w grn" style="width:40px;height:40px;border-radius:12px"><i class="ti ti-calendar-week" aria-hidden="true"></i></div>
+          <div><div class="mini-label">MY 時間割</div><div class="mini-sub">前期・2年4組</div></div>
+        </button>
+        <button class="mini-btn" onclick="go('dl')">
+          <div class="ico-w ora" style="width:40px;height:40px;border-radius:12px"><i class="ti ti-train" aria-hidden="true"></i></div>
+          <div><div class="mini-label">遅延情報</div><div class="mini-sub" id="home-dl-sub">神奈川の路線</div></div>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <button class="tb on"><i class="ti ti-home" aria-hidden="true"></i>ホーム</button>
+    <button class="tb" onclick="go('tt')"><i class="ti ti-calendar-week" aria-hidden="true"></i>時間割</button>
+    <button class="tb" onclick="go('dl')"><i class="ti ti-train" aria-hidden="true"></i>遅延情報</button>
+  </div>
+</div>
+
+<div id="scr-tt" class="scr">
+  <div class="topbar"><span class="topbar-title">MY 時間割</span><span style="font-size:11px;color:#1A1A2E;font-weight:700">前期</span></div>
+  <div class="tt-next-bar">
+    <i class="ti ti-bolt" aria-hidden="true" style="font-size:20px;color:#6C47FF;flex-shrink:0"></i>
+    <div><div class="tt-next-text">次の授業</div><div class="tt-next-name">生基 ／ 1限 ／ 則 茂雄</div></div>
+  </div>
+  <div class="scroll-body"><div class="tt-wrap">
+    <table class="tt-table">
+      <thead><tr><th style="width:20px"></th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th></tr></thead>
+      <tbody id="ttb"></tbody>
+    </table>
+  </div></div>
+  <div class="tabbar">
+    <button class="tb" onclick="go('home')"><i class="ti ti-home" aria-hidden="true"></i>ホーム</button>
+    <button class="tb on"><i class="ti ti-calendar-week" aria-hidden="true"></i>時間割</button>
+    <button class="tb" onclick="go('dl')"><i class="ti ti-train" aria-hidden="true"></i>遅延情報</button>
+  </div>
+</div>
+
+<div id="scr-dl" class="scr">
+  <div class="topbar"><span class="topbar-title">遅延情報</span></div>
+  <div class="scroll-body">
+    <div class="dl-hero">
+      <div class="dl-hero-left"><span class="live-dot"></span>LIVE　常時更新中</div>
+      <div class="next-update" id="last-updated">12:35:00</div>
+    </div>
+    <div class="dl-section">路線一覧（リアルタイム）</div>
+    <div id="dl-cards"></div>
+  </div>
+  <div class="tabbar">
+    <button class="tb" onclick="go('home')"><i class="ti ti-home" aria-hidden="true"></i>ホーム</button>
+    <button class="tb" onclick="go('tt')"><i class="ti ti-calendar-week" aria-hidden="true"></i>時間割</button>
+    <button class="tb on"><i class="ti ti-train" aria-hidden="true"></i>遅延情報</button>
+  </div>
+</div>
+
+<div id="scr-tc" class="scr">
+  <div class="topbar">
+    <span class="back-btn" onclick="go('home')"><i class="ti ti-chevron-left" aria-hidden="true" style="font-size:16px"></i>戻る</span>
+    <span class="topbar-title">先生に連絡</span>
+  </div>
+  <div class="scroll-body"><div class="tc-list" id="tc-list"></div></div>
+  <div class="tabbar">
+    <button class="tb on" onclick="go('home')"><i class="ti ti-home" aria-hidden="true"></i>ホーム</button>
+    <button class="tb" onclick="go('tt')"><i class="ti ti-calendar-week" aria-hidden="true"></i>時間割</button>
+    <button class="tb" onclick="go('dl')"><i class="ti ti-train" aria-hidden="true"></i>遅延情報</button>
+  </div>
+</div>
+
+<div id="scr-msg" class="scr">
+  <div class="topbar">
+    <span class="back-btn" onclick="go('tc')"><i class="ti ti-chevron-left" aria-hidden="true" style="font-size:16px"></i>戻る</span>
+    <span class="topbar-title">連絡を送る</span>
+  </div>
+  <div class="msg-screen">
+    <div class="msg-header">
+      <div class="msg-to">送信先の先生</div>
+      <div class="msg-teacher" id="msg-teacher-name">則 茂雄先生</div>
+      <div class="msg-subj-lbl" id="msg-teacher-subj">生基 担当</div>
+    </div>
+    <div class="msg-body">
+      <div>
+        <div class="msg-label">📷 遅延証明書の写真</div>
+        <div class="photo-area" id="photo-area" onclick="fakePhoto()">
+          <i class="ti ti-camera" aria-hidden="true"></i>
+          <div class="photo-area-label">タップして写真を撮る</div>
+          <div class="photo-area-sub">駅でもらった遅延証明書をカメラで撮影</div>
+        </div>
+        <div class="photo-preview" id="photo-preview">
+          <i class="ti ti-photo-check" aria-hidden="true"></i>
+          <div style="flex:1"><div class="photo-preview-text">遅延証明書.jpg</div><div style="font-size:10px;color:#00A878;margin-top:1px">撮影完了 ✓</div></div>
+          <span onclick="removePhoto()" style="font-size:18px;color:#6B6B80;cursor:pointer"><i class="ti ti-x" aria-hidden="true"></i></span>
+        </div>
+      </div>
+      <div>
+        <div class="msg-label">✏️ メッセージ（任意）</div>
+        <textarea rows="4" placeholder="例：京急線の遅延で約10分遅れます。"></textarea>
+      </div>
+    </div>
+    <div class="send-bar">
+      <button class="send-btn" onclick="go('sent')"><i class="ti ti-send" aria-hidden="true"></i><span>この内容で先生に送信する</span></button>
+    </div>
+  </div>
+</div>
+
+<div id="scr-sent" class="scr">
+  <div class="topbar"><span class="topbar-title">送信完了</span></div>
+  <div class="sent-wrap">
+    <div class="sent-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
+    <div class="sent-title">送信しました！</div>
+    <div class="sent-sub">先生に連絡が届きました。<br>遅延証明書も一緒に送信されています。</div>
+    <button class="sent-back" onclick="go('home')">ホームに戻る</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const ttData=[
+  {per:1,mon:{s:'生基',t:'則 茂雄',r:'CR241'},tue:{s:'古典探究い',t:'宍戸 瑞希',r:'CR21'},wed:{s:'EWII24A',t:'渡邊 朋子',r:'セミナー4'},thu:{s:'',t:'',r:''},fri:{s:'生基',t:'則 茂雄',r:'CR24'}},
+  {per:2,mon:{s:'総英Ⅱ24A',t:'畑瀬 敏樹',r:'CR24'},tue:{s:'古典探究い',t:'宍戸 瑞希',r:'CR21'},wed:{s:'総英Ⅱ24A',t:'畑瀬 敏樹',r:'CR24'},thu:{s:'世探あ',t:'徳原 拓哉',r:'国際交流ホ'},fri:{s:'体育β',t:'城間 由紀子',r:'体育館'}},
+  {per:3,mon:{s:'世探あ',t:'徳原 拓哉',r:'国際交流ホ'},tue:{s:'総英Ⅰ語法',t:'横山 瑛樹',r:'CALL1'},wed:{s:'古典探究い',t:'宍戸 瑞希',r:'CR21'},thu:{s:'',t:'',r:''},fri:{s:'国際情報',t:'鎌田 高徳',r:'コンピュータ'}},
+  {per:4,mon:{s:'世探あ',t:'徳原 拓哉',r:'国際交流ホ'},tue:{s:'総英Ⅰ語法',t:'横山 瑛樹',r:'CALL1'},wed:{s:'古典探究い',t:'宍戸 瑞希',r:'CR21'},thu:{s:'',t:'',r:''},fri:{s:'国際情報',t:'鎌田 高徳',r:'コンピュータ'}},
+  {per:5,mon:{s:'PR24い',t:'林 昂平',r:'CR24'},tue:{s:'保健β24',t:'城間 由紀子',r:'CR24'},wed:{s:'公共24',t:'藏野 皓士',r:'CR24'},thu:{s:'EWII24A',t:'渡邊 朋子',r:'セミナー4'},fri:{s:'家基24',t:'斎藤 淳子',r:'CR24'}},
+  {per:6,mon:{s:'LHR24',t:'渡邊 泰斗',r:'CR24'},tue:{s:'体育β',t:'城間 由紀子',r:'体育館'},wed:{s:'国際理解う2',t:'鈴木 佳光',r:'コンピュータ'},thu:{s:'公共24',t:'藏野 皓士',r:'CR24'},fri:{s:'家基24',t:'斎藤 淳子',r:'CR24'}},
+  {per:7,mon:{s:'',t:'',r:''},tue:{s:'総英Ⅱ24A',t:'畑瀬 敏樹',r:'CR24'},wed:{s:'国際理解う2',t:'鈴木 佳光',r:'コンピュータ'},thu:{s:'',t:'',r:''},fri:{s:'総英Ⅱ24A',t:'畑瀬 敏樹',r:'CR24'}},
+];
+const subColor={'生基':'c-grn','総英Ⅱ24A':'c-blu','世探あ':'c-ora','古典探究い':'c-pur','EWII24A':'c-teal','総英Ⅰ語法':'c-pnk','体育β':'c-red','国際情報':'c-yel','PR24い':'c-pur','保健β24':'c-red','公共24':'c-teal','LHR24':'c-grn','国際理解う2':'c-blu','家基24':'c-yel'};
+const days=['mon','tue','wed','thu','fri'];
+const tb=document.getElementById('ttb');
+ttData.forEach(row=>{
+  const tr=document.createElement('tr');
+  const td0=document.createElement('td');td0.className='per';td0.textContent=row.per;tr.appendChild(td0);
+  days.forEach(d=>{
+    const td=document.createElement('td');
+    const c=row[d];
+    if(c.s){const div=document.createElement('div');div.className='cell '+(subColor[c.s]||'c-pur');div.innerHTML=`<div class="cell-name">${c.s}</div><div class="cell-teacher">${c.t}</div><div class="cell-room">${c.r}</div>`;td.appendChild(div);}
+    tr.appendChild(td);
+  });
+  tb.appendChild(tr);
+});
+
+const teachers=[
+  {name:'則 茂雄',subj:'生基',av:'則',col:'#D4F5E9',tc:'#007A56'},
+  {name:'畑瀬 敏樹',subj:'総英Ⅱ24A',av:'畑',col:'#D6EEFF',tc:'#0076CC'},
+  {name:'宍戸 瑞希',subj:'古典探究い',av:'宍',col:'#EDE8FF',tc:'#5B35D5'},
+  {name:'徳原 拓哉',subj:'世界探究あ',av:'徳',col:'#FFE8D6',tc:'#CC4E12'},
+  {name:'横山 瑛樹',subj:'総英Ⅰ語法',av:'横',col:'#FFE0EC',tc:'#CC2060'},
+  {name:'城間 由紀子',subj:'体育β／保健β24',av:'城',col:'#FFE0E0',tc:'#CC0033'},
+  {name:'藏野 皓士',subj:'公共24',av:'藏',col:'#D0F5F0',tc:'#007B6E'},
+  {name:'渡邊 朋子',subj:'EWII24A',av:'渡',col:'#D0F5F0',tc:'#007B6E'},
+  {name:'鎌田 高徳',subj:'国際情報',av:'鎌',col:'#FFF5CC',tc:'#8A6000'},
+  {name:'林 昂平',subj:'PR24い',av:'林',col:'#EDE8FF',tc:'#5B35D5'},
+  {name:'渡邊 泰斗',subj:'LHR24',av:'渡',col:'#D4F5E9',tc:'#007A56'},
+  {name:'鈴木 佳光',subj:'国際理解う2',av:'鈴',col:'#D6EEFF',tc:'#0076CC'},
+  {name:'斎藤 淳子',subj:'家基24',av:'斎',col:'#FFF5CC',tc:'#8A6000'},
+];
+const tcList=document.getElementById('tc-list');
+teachers.forEach(t=>{
+  const div=document.createElement('div');div.className='tc-row';
+  div.innerHTML=`<div class="av" style="background:${t.col};color:${t.tc}">${t.av}</div><div style="flex:1"><div class="tc-name">${t.name}先生</div><div class="tc-subj">${t.subj}</div></div><i class="ti ti-chevron-right" aria-hidden="true" style="color:#6B6B80;font-size:16px"></i>`;
+  div.onclick=()=>openMsg(t);
+  tcList.appendChild(div);
+});
+
+let lines=[
+  {name:'京急線',op:'京浜急行電鉄',dot:'#E53E3E',status:'ng',msg:'品川〜横浜間で約10分の遅延が発生しています。',delayMin:10},
+  {name:'相鉄線',op:'相模鉄道',dot:'#185FA5',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'JR 東海道線',op:'JR東日本',dot:'#F97316',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'JR 横浜線',op:'JR東日本',dot:'#16A34A',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'JR 南武線',op:'JR東日本',dot:'#FACC15',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'東急東横線',op:'東急電鉄',dot:'#EF4444',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'東急田園都市線',op:'東急電鉄',dot:'#7C3AED',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'小田急線',op:'小田急電鉄',dot:'#2563EB',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'横浜市営地下鉄',op:'横浜市交通局',dot:'#0891B2',status:'ok',msg:'現在、平常通り運転しています。'},
+  {name:'みなとみらい線',op:'横浜高速鉄道',dot:'#BE185D',status:'info',msg:'一部ダイヤに変更があります。'},
+];
+
+function renderCards(){
+  const dlCards=document.getElementById('dl-cards');
+  const wasOpen=[...document.querySelectorAll('.dl-detail')].map(d=>d.style.display==='block');
+  dlCards.innerHTML='';
+  lines.forEach((l,i)=>{
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<div class="dl-card" id="card${i}" onclick="tdl(${i})"><div class="dl-top"><div style="display:flex;align-items:center;gap:10px"><div class="dl-dot" style="background:${l.dot}"></div><div><div class="dl-name">${l.name}</div><div class="dl-op">${l.op}</div></div></div><span class="badge ${l.status==='ng'?'ng':l.status==='info'?'info':'ok'}">${l.status==='ng'?'遅延あり':l.status==='info'?'運行変更':'平常運転'}</span></div><div class="dl-detail" id="dp${i}">${l.msg}<div class="dl-time">${l.time||''} 時点</div></div></div>`;
+    dlCards.appendChild(wrap);
+  });
+  wasOpen.forEach((open,i)=>{if(open){const el=document.getElementById('dp'+i);if(el)el.style.display='block';}});
+}
+renderCards();
+
+function tdl(i){
+  const el=document.getElementById('dp'+i);
+  if(el)el.style.display=el.style.display==='block'?'none':'block';
+}
+
+// 常時（数秒おきに）京急線の遅延状況を細かく更新するシミュレーション
+function liveUpdate(){
+  const now=new Date();
+  const timeStr=now.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const lu=document.getElementById('last-updated');
+  if(lu)lu.textContent=timeStr;
+  lines.forEach(l=>l.time=timeStr);
+
+  // 京急線：遅延分数を少しずつ揺らす（リアルタイム感）
+  if(lines[0].status==='ng'){
+    lines[0].delayMin=Math.max(2,(lines[0].delayMin||10)+(Math.random()<0.5?-1:1));
+    if(lines[0].delayMin<=2 && Math.random()<0.3){
+      lines[0].status='ok';
+      lines[0].msg='現在、平常通り運転しています。';
+    }else{
+      lines[0].msg=`品川〜横浜間で約${lines[0].delayMin}分の遅延が発生しています。`;
+    }
+  }else if(Math.random()<0.08){
+    lines[0].status='ng';
+    lines[0].delayMin=Math.floor(Math.random()*10)+3;
+    lines[0].msg=`品川〜横浜間で約${lines[0].delayMin}分の遅延が発生しています。`;
+  }
+
+  const ngCount=lines.filter(l=>l.status==='ng').length;
+  const sub=document.getElementById('home-dl-sub');
+  if(sub)sub.textContent=ngCount>0?`${ngCount}路線で遅延中`:'すべて平常運転';
+
+  renderCards();
+  const c0=document.getElementById('card0');
+  if(c0){c0.classList.add('flash');setTimeout(()=>c0.classList.remove('flash'),500);}
+}
+
+liveUpdate();
+setInterval(liveUpdate,3000); // 3秒ごとに常時リアルタイム更新
+
+function openMsg(t){
+  document.getElementById('msg-teacher-name').textContent=t.name+'先生';
+  document.getElementById('msg-teacher-subj').textContent=t.subj+' 担当';
+  document.getElementById('photo-area').style.display='flex';
+  document.getElementById('photo-preview').style.display='none';
+  go('msg');
+}
+function fakePhoto(){document.getElementById('photo-area').style.display='none';document.getElementById('photo-preview').style.display='flex';}
+function removePhoto(){document.getElementById('photo-area').style.display='flex';document.getElementById('photo-preview').style.display='none';}
+const sws=['sw-home','sw-tt','sw-dl'];
+function go(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('scr-'+id).classList.add('on');
+  const map={home:'sw-home',tt:'sw-tt',dl:'sw-dl',tc:'sw-home',msg:'sw-home',sent:'sw-home'};
+  sws.forEach(b=>{const e=document.getElementById(b);e.style.background='#fff';e.style.color='#1A1A2E';e.style.border='0.5px solid #C0B8F0';});
+  const sw=document.getElementById(map[id]);
+  if(sw){sw.style.background='#6C47FF';sw.style.color='#fff';sw.style.border='none';}
+}
+</script>
